@@ -213,7 +213,7 @@ struct tarfs_mount *
 MP_TO_TARFS_MOUNT(struct mount *mp)
 {
 
-	MPASS(mp != NULL && mp->mnt_data != NULL);
+	KKASSERT(mp != NULL && mp->mnt_data != NULL);
 	return (mp->mnt_data);
 }
 
@@ -222,7 +222,7 @@ struct tarfs_node *
 VP_TO_TARFS_NODE(struct vnode *vp)
 {
 
-	MPASS(vp != NULL && vp->v_data != NULL);
+	KKASSERT(vp != NULL && vp->v_data != NULL);
 	return (vp->v_data);
 }
 

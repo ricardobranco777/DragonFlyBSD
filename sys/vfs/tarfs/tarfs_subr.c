@@ -199,8 +199,8 @@ tarfs_alloc_node(struct tarfs_mount *tmp, const char *name, size_t namelen,
 	tnp->size = tnp->physize = sz;
 	switch (type) {
 	case VDIR:
-		MPASS(parent != tnp);
-		MPASS(parent != NULL || tmp->root == NULL);
+		KKASSERT(parent != tnp);
+		KKASSERT(parent != NULL || tmp->root == NULL);
 		TAILQ_INIT(&tnp->dir.dirhead);
 		tnp->nlink++;
 		if (parent == NULL) {
@@ -246,7 +246,7 @@ tarfs_alloc_node(struct tarfs_mount *tmp, const char *name, size_t namelen,
 	} else {
 		tnp->parent = tnp;
 	}
-	MPASS(tnp->ino != 0);
+	KKASSERT(tnp->ino != 0);
 
 	TARFS_ALLNODES_LOCK(tmp);
 	TAILQ_INSERT_TAIL(&tmp->allnodes, tnp, entries);
@@ -380,7 +380,7 @@ tarfs_free_node(struct tarfs_node *tnp)
 {
 	struct tarfs_mount *tmp;
 
-	MPASS(tnp != NULL);
+	KKASSERT(tnp != NULL);
 	tmp = tnp->tmp;
 
 	switch (tnp->type) {

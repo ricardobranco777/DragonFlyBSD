@@ -296,7 +296,7 @@ tarfs_lookup_path(struct tarfs_mount *tmp, char *name, size_t namelen,
 	int error;
 	boolean_t do_lookup;
 
-	MPASS(name != NULL && namelen != 0);
+	KKASSERT(name != NULL && namelen != 0);
 
 	do_lookup = true;
 	error = 0;
@@ -413,7 +413,7 @@ tarfs_free_mount(struct tarfs_mount *tmp)
 	struct mount *mp;
 	struct tarfs_node *tnp, *tnp_next;
 
-	MPASS(tmp != NULL);
+	KKASSERT(tmp != NULL);
 
 	TARFS_DPF(ALLOC, "%s: Freeing mount structure %p\n", __func__, tmp);
 
@@ -1046,7 +1046,7 @@ tarfs_unmount(struct mount *mp, int mntflags)
 	tmp = MP_TO_TARFS_MOUNT(mp);
 	vp = tmp->vp;
 
-	MPASS(vp != NULL);
+	KKASSERT(vp != NULL);
 	TARFS_DPF(FS, "%s: U: hold %u use %u lock 0x%x\n", __func__,
 	    vp->v_holdcnt, vp->v_usecount, VOP_ISLOCKED(vp));
 	vn_close(vp, FREAD, td->td_ucred, td);

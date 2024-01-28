@@ -50,7 +50,7 @@ tarfs_open(struct vop_open_args *ap)
 	struct vnode *vp;
 
 	vp = ap->a_vp;
-	MPASS(VOP_ISLOCKED(vp));
+	ASSERT_VOP_LOCKED(vp, "tarfs_open");
 	tnp = VP_TO_TARFS_NODE(vp);
 
 	TARFS_DPF(VNODE, "%s(%p=%s, %o)\n", __func__,
@@ -72,7 +72,7 @@ tarfs_close(struct vop_close_args *ap)
 
 	vp = ap->a_vp;
 
-	MPASS(VOP_ISLOCKED(vp));
+	ASSERT_VOP_LOCKED(vp, "tarfs_close");
 	tnp = VP_TO_TARFS_NODE(vp);
 
 	TARFS_DPF(VNODE, "%s(%p=%s)\n", __func__,
@@ -96,7 +96,7 @@ tarfs_access(struct vop_access_args *ap)
 	accmode = ap->a_accmode;
 	cred = ap->a_cred;
 
-	MPASS(VOP_ISLOCKED(vp));
+	ASSERT_VOP_LOCKED(vp, "tarfs_access");
 	tnp = VP_TO_TARFS_NODE(vp);
 
 	TARFS_DPF(VNODE, "%s(%p=%s, %o)\n", __func__,
@@ -308,7 +308,7 @@ tarfs_readdir(struct vop_readdir_args *ap)
 	if (uio->uio_offset == TARFS_COOKIE_DOTDOT) {
 		TARFS_DPF(VNODE, "%s: Generating .. entry\n", __func__);
 		/* fake .. entry */
-		MPASS(tnp->parent != NULL);
+		KKASSERT(tnp->parent != NULL);
 		TARFS_NODE_LOCK(tnp->parent);
 		cde.d_fileno = tnp->parent->ino;
 		TARFS_NODE_UNLOCK(tnp->parent);
@@ -372,7 +372,7 @@ tarfs_readdir(struct vop_readdir_args *ap)
 			    current, current->type);
 		}
 		cde.d_namlen = current->namelen;
-		MPASS(tnp->namelen < sizeof(cde.d_name));
+		KKASSERT(tnp->namelen < sizeof(cde.d_name));
 		(void)memcpy(cde.d_name, current->name, current->namelen);
 		cde.d_name[current->namelen] = '\0';
 		cde.d_reclen = GENERIC_DIRSIZ(&cde);
@@ -442,7 +442,7 @@ done:
 			    idx, off);
 			(*cookies)[idx] = off;
 		}
-		MPASS(uio->uio_offset == off);
+		KKASSERT(uio->uio_offset == off);
 	}
 
 	return (error);
@@ -502,8 +502,8 @@ tarfs_readlink(struct vop_readlink_args *ap)
 	uiop = ap->a_uio;
 	vp = ap->a_vp;
 
-	MPASS(uiop->uio_offset == 0);
-	MPASS(vp->v_type == VLNK);
+	KKASSERT(uiop->uio_offset == 0);
+	KKASSERT(vp->v_type == VLNK);
 
 	tnp = VP_TO_TARFS_NODE(vp);
 
@@ -571,10 +571,10 @@ tarfs_strategy(struct vop_strategy_args *ap)
 
 	tnp = VP_TO_TARFS_NODE(ap->a_vp);
 	bp = ap->a_bp;
-	MPASS(bp->b_iocmd == BIO_READ);
-	MPASS(bp->b_iooffset >= 0);
-	MPASS(bp->b_bcount > 0);
-	MPASS(bp->b_bufsize >= bp->b_bcount);
+	KKASSERT(bp->b_iocmd == BIO_READ);
+	KKASSERT(bp->b_iooffset >= 0);
+	KKASSERT(bp->b_bcount > 0);
+	KKASSERT(bp->b_bufsize >= bp->b_bcount);
 	TARFS_DPF(VNODE, "%s(%p=%s, %zu, %ld/%ld)\n", __func__, tnp,
 	    tnp->name, (size_t)bp->b_iooffset, bp->b_bcount, bp->b_bufsize);
 	iov.iov_base = bp->b_data;
