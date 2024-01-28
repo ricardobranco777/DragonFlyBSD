@@ -27,11 +27,9 @@
  */
 
 #include "opt_tarfs.h"
-#include "opt_zstdio.h"
 
 #include <sys/param.h>
 #include <sys/systm.h>
-#include <sys/counter.h>
 #include <sys/bio.h>
 #include <sys/buf.h>
 #include <sys/malloc.h>
@@ -51,8 +49,8 @@
 #include <contrib/zstd/lib/zstd.h>
 #endif
 
-#include <fs/tarfs/tarfs.h>
-#include <fs/tarfs/tarfs_dbg.h>
+#include <vfs/tarfs/tarfs.h>
+#include <vfs/tarfs/tarfs_dbg.h>
 
 #ifdef TARFS_DEBUG
 SYSCTL_NODE(_vfs_tarfs, OID_AUTO, zio, CTLFLAG_RD, 0,
