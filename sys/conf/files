@@ -1331,9 +1331,13 @@ vfs/isofs/cd9660/cd9660_util.c	optional cd9660
 vfs/isofs/cd9660/cd9660_vfsops.c	optional cd9660
 vfs/isofs/cd9660/cd9660_vnops.c	optional cd9660
 vfs/isofs/cd9660/cd9660_iconv/cd9660_iconv.c	optional cd9660_iconv
-vfs/udf/osta.c			optional udf
-vfs/udf/udf_vfsops.c		optional udf
-vfs/udf/udf_vnops.c		optional udf
+fs/tarfs/tarfs_io.c	optional tarfs
+fs/tarfs/tarfs_subr.c	optional tarfs
+fs/tarfs/tarfs_vfsops.c	optional tarfs
+fs/tarfs/tarfs_vnops.c	optional tarfs
+vfs/udf/osta.c		optional udf
+vfs/udf/udf_vfsops.c	optional udf
+vfs/udf/udf_vnops.c	optional udf
 kern/imgact_elf.c	standard
 kern/imgact_resident.c	standard
 kern/imgact_shell.c	standard
